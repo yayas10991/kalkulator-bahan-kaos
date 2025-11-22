@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Kain Kaos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .calculator-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .result-container {
+            background-color: #e9f7fe;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .form-select, .form-control {
+            margin-bottom: 15px;
+        }
+        .size-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .size-input {
+            text-align: center;
+        }
+        .size-input label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .gramasi-options {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #f1f8ff;
+            border-radius: 8px;
+        }
+        .result-box {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .title {
+            color: #0d6efd;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .btn-calculate {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .btn-calculate:hover {
+            background-color: #0b5ed7;
+            color: white;
+        }
+        .form-check {
+            margin-bottom: 8px;
+        }
+        .table-responsive {
+            margin-top: 20px;
+        }
+        .table th {
+            background-color: #0d6efd;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Kalkulator Bahan Kaos</h1>
+        
+        <div class="calculator-container">
+            <form id="kainForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="modelKaos" class="form-label">Model Kaos</label>
+                        <select class="form-select" id="modelKaos" required>
+                            <option value="" selected disabled>Pilih Model Kaos</option>
+                            <option value="dewasa">Dewasa</option>
+                            <option value="anak">Anak</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="panjangTangan" class="form-label">Panjang Tangan</label>
+                        <select class="form-select" id="panjangTangan" required>
+                            <option value="" selected disabled>Pilih Panjang Tangan</option>
+                            <option value="pendek">Pendek</option>
+                            <option value="panjang">Panjang</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="jenisKain" class="form-label">Jenis Kain</label>
+                        <select class="form-select" id="jenisKain" required>
+                            <option value="" selected disabled>Pilih Jenis Kain</option>
+                            <option value="tubular">Tubular</option>
+                            <option value="finish">Finish</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="settinganKain" class="form-label">Settingan Kain</label>
+                        <select class="form-select" id="settinganKain" required>
+                            <option value="" selected disabled>Pilih Settingan Kain</option>
+                            <option value="36">36</option>
+                            <option value="40">40</option>
+                            <option value="42">42</option>
+                            <option value="45">45</option>
+                            <option value="72">72</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="gramasiKain" class="form-label">Gramasi Kain</label>
+                        <select class="form-select" id="gramasiKain" required>
+                            <option value="" selected disabled>Pilih Gramasi Kain</option>
+                            <option value="30s">30s</option>
+                            <option value="24s">24s</option>
+                            <option value="20s">20s</option>
+                        </select>
+                        
+                        <div id="gramasiOptions" class="gramasi-options">
+                            <!-- Options will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h5 class="mb-3">Jumlah Kaos per Ukuran</h5>
+                    <div class="size-inputs">
+                        <div class="size-input">
+                            <label for="sizeXS">XS</label>
+                            <input type="number" class="form-control" id="sizeXS" min="0" value="0">
+                        </div>
+                        <div class="size-input">
+                            <label for="sizeS">S</label>
+                            <input type="number" class="form-control" id="sizeS" min="0" value="0">
+                        </div>
+                        <div class="size-input">
+                            <label for="sizeM">M</label>
+                            <input type="number" class="form-control" id="sizeM" min="0" value="0">
+                        </div>
+                        <div class="size-input">
+                            <label for="sizeL">L</label>
+                            <input type="number" class="form-control" id="sizeL" min="0" value="0">
+                        </div>
+                        <div class="size-input">
+                            <label for="sizeXL">XL</label>
+                            <input type="number" class="form-control" id="sizeXL" min="0" value="0">
+                        </div>
+                        <div class="size-input">
+                            <label for="size2XL">2XL</label>
+                            <input type="number" class="form-control" id="size2XL" min="0" value="0">
+                        </div>
+                        <div class="size-input">
+                            <label for="size3XL">3XL</label>
+                            <input type="number" class="form-control" id="size3XL" min="0" value="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <button type="button" class="btn btn-calculate" id="calculateBtn">Hitung Kebutuhan Kain</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="result-container" id="resultContainer" style="display: none;">
+            <h4 class="mb-3">Hasil Perhitungan</h4>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="result-box">
+                        <h5>Kebutuhan Kain dalam Centimeter</h5>
+                        <div class="result-value" id="resultCm">0 cm</div>
+                        <p class="mt-2 mb-0">Termasuk waste 1%</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="result-box">
+                        <h5>Kebutuhan Kain dalam Kilogram</h5>
+                        <div class="result-value" id="resultKg">0 kg</div>
+                        <p class="mt-2 mb-0">Termasuk waste 1%</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover mt-4">
+                    <thead>
+                        <tr>
+                            <th>Ukuran</th>
+                            <th>Jumlah</th>
+                            <th>Kebutuhan per Kaos (cm)</th>
+                            <th>Total Kebutuhan (cm)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailTable">
+                        <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data ukuran kaos dalam cm
+        const sizeDataCm = {
+            "dewasa": {
+                "pendek": {
+                    "tubular": {
+                        "36": { "XS": 63.20, "S": 82.00, "M": 79.50, "L": 80.50, "XL": 83.50, "2XL": 85.00, "3XL": 94.00 },
+                        "40": { "XS": 54.33, "S": 54.67, "M": 64.80, "L": 80.50, "XL": 83.50, "2XL": 85.00, "3XL": 85.00 },
+                        "42": { "XS": 54.00, "S": 53.00, "M": 56.33, "L": 66.40, "XL": 81.00, "2XL": 83.50, "3XL": 84.50 },
+                        "45": { "XS": 54.00, "S": 53.00, "M": 55.33, "L": 57.00, "XL": 61.00, "2XL": 66.80, "3XL": 77.60 },
+                        "72": { "XS": 54.00, "S": 53.00, "M": 56.33, "L": 66.40, "XL": 81.00, "2XL": 83.50, "3XL": 84.50 } // Menggunakan data 42 sebagai default
+                    },
+                    "finish": {
+                        "36": { "XS": 63.20, "S": 82.00, "M": 79.50, "L": 80.50, "XL": 83.50, "2XL": 85.00, "3XL": 94.00 },
+                        "40": { "XS": 54.33, "S": 54.67, "M": 64.80, "L": 80.50, "XL": 83.50, "2XL": 85.00, "3XL": 85.00 },
+                        "42": { "XS": 54.00, "S": 53.00, "M": 56.33, "L": 66.40, "XL": 81.00, "2XL": 83.50, "3XL": 84.50 },
+                        "45": { "XS": 54.00, "S": 53.00, "M": 55.33, "L": 57.00, "XL": 61.00, "2XL": 66.80, "3XL": 77.60 },
+                        "72": { "XS": 54.00, "S": 53.00, "M": 56.33, "L": 66.40, "XL": 81.00, "2XL": 83.50, "3XL": 84.50 } // Menggunakan data 42 sebagai default
+                    }
+                },
+                "panjang": {
+                    "tubular": {
+                        "36": { "XS": 76.00, "S": 94.00, "M": 104.00, "L": 97.33, "XL": 102.00, "2XL": 104.00, "3XL": 147.00 },
+                        "40": { "XS": 61.20, "S": 72.00, "M": 78.50, "L": 98.67, "XL": 102.00, "2XL": 104.00, "3XL": 105.33 },
+                        "42": { "XS": 60.40, "S": 71.50, "M": 74.00, "L": 82.50, "XL": 102.00, "2XL": 104.00, "3XL": 105.33 },
+                        "45": { "XS": 60.40, "S": 71.50, "M": 73.55, "L": 74.50, "XL": 85.00, "2XL": 88.00, "3XL": 105.33 },
+                        "72": { "XS": 60.40, "S": 71.50, "M": 74.00, "L": 82.50, "XL": 102.00, "2XL": 104.00, "3XL": 105.33 } // Menggunakan data 42 sebagai default
+                    },
+                    "finish": {
+                        "36": { "XS": 76.00, "S": 94.00, "M": 104.00, "L": 97.33, "XL": 102.00, "2XL": 104.00, "3XL": 147.00 },
+                        "40": { "XS": 61.20, "S": 72.00, "M": 78.50, "L": 98.67, "XL": 102.00, "2XL": 104.00, "3XL": 105.33 },
+                        "42": { "XS": 60.40, "S": 71.50, "M": 74.00, "L": 82.50, "XL": 102.00, "2XL": 104.00, "3XL": 105.33 },
+                        "45": { "XS": 60.40, "S": 71.50, "M": 73.55, "L": 74.50, "XL": 85.00, "2XL": 88.00, "3XL": 105.33 },
+                        "72": { "XS": 60.40, "S": 71.50, "M": 74.00, "L": 82.50, "XL": 102.00, "2XL": 104.00, "3XL": 105.33 } // Menggunakan data 42 sebagai default
+                    }
+                }
+            },
+            "anak": {
+                "pendek": {
+                    "tubular": {
+                        "36": { "XS": 21.29, "S": 20.13, "M": 24.80, "L": 26.00, "XL": 26.80, "2XL": 28.00, "3XL": 30.00 },
+                        "40": { "XS": 18.89, "S": 19.76, "M": 21.33, "L": 21.86, "XL": 25.40, "2XL": 27.75, "3XL": 28.75 },
+                        "42": { "XS": 17.65, "S": 18.67, "M": 19.88, "L": 21.25, "XL": 22.17, "2XL": 24.62, "3XL": 25.63 },
+                        "45": { "XS": 16.30, "S": 17.29, "M": 18.00, "L": 21.86, "XL": 22.33, "2XL": 23.33, "3XL": 24.33 },
+                        "72": { "XS": 17.65, "S": 18.67, "M": 19.88, "L": 21.25, "XL": 22.17, "2XL": 24.62, "3XL": 25.63 } // Menggunakan data 42 sebagai default
+                    },
+                    "finish": {
+                        "36": { "XS": 21.29, "S": 20.13, "M": 24.80, "L": 26.00, "XL": 26.80, "2XL": 28.00, "3XL": 30.00 },
+                        "40": { "XS": 18.89, "S": 19.76, "M": 21.33, "L": 21.86, "XL": 25.40, "2XL": 27.75, "3XL": 28.75 },
+                        "42": { "XS": 17.65, "S": 18.67, "M": 19.88, "L": 21.25, "XL": 22.17, "2XL": 24.62, "3XL": 25.63 },
+                        "45": { "XS": 16.30, "S": 17.29, "M": 18.00, "L": 21.86, "XL": 22.33, "2XL": 23.33, "3XL": 24.33 },
+                        "72": { "XS": 17.65, "S": 18.67, "M": 19.88, "L": 21.25, "XL": 22.17, "2XL": 24.62, "3XL": 25.63 } // Menggunakan data 42 sebagai default
+                    }
+                },
+                "panjang": {
+                    "tubular": {
+                        "36": { "XS": 25.80, "S": 26.20, "M": 29.78, "L": 36.29, "XL": 37.67, "2XL": 36.75, "3XL": 38.25 },
+                        "40": { "XS": 24.29, "S": 25.08, "M": 25.85, "L": 27.60, "XL": 31.33, "2XL": 36.67, "3XL": 38.67 },
+                        "42": { "XS": 22.26, "S": 23.29, "M": 24.29, "L": 27.60, "XL": 28.20, "2XL": 29.40, "3XL": 30.40 },
+                        "45": { "XS": 20.66, "S": 21.67, "M": 23.33, "L": 25.27, "XL": 28.80, "2XL": 29.60, "3XL": 30.50 },
+                        "72": { "XS": 22.26, "S": 23.29, "M": 24.29, "L": 27.60, "XL": 28.20, "2XL": 29.40, "3XL": 30.40 } // Menggunakan data 42 sebagai default
+                    },
+                    "finish": {
+                        "36": { "XS": 25.80, "S": 26.20, "M": 29.78, "L": 36.29, "XL": 37.67, "2XL": 36.75, "3XL": 38.25 },
+                        "40": { "XS": 24.29, "S": 25.08, "M": 25.85, "L": 27.60, "XL": 31.33, "2XL": 36.67, "3XL": 38.67 },
+                        "42": { "XS": 22.26, "S": 23.29, "M": 24.29, "L": 27.60, "XL": 28.20, "2XL": 29.40, "3XL": 30.40 },
+                        "45": { "XS": 20.66, "S": 21.67, "M": 23.33, "L": 25.27, "XL": 28.80, "2XL": 29.60, "3XL": 30.50 },
+                        "72": { "XS": 22.26, "S": 23.29, "M": 24.29, "L": 27.60, "XL": 28.20, "2XL": 29.40, "3XL": 30.40 } // Menggunakan data 42 sebagai default
+                    }
+                }
+            }
+        };
+
+        // Data konversi cm ke kg
+        const conversionData = {
+            "36": {
+                "30s": {
+                    "140-150": 330,
+                    "145-165": 310,
+                    "150-170": 290,
+                    "155-185": 270,
+                    "160-190": 260
+                },
+                "24s": {
+                    "170-190": 280,
+                    "175-185": 270,
+                    "180-190": 260,
+                    "200-220": 240,
+                    "240-260": 230
+                },
+                "20s": {
+                    "190-210": 240,
+                    "200-210": 230,
+                    "230-245": 210,
+                    "240-260": 200,
+                    "250-270": 190
+                }
+            },
+            "40": {
+                "30s": {
+                    "140-150": 320,
+                    "145-165": 300,
+                    "150-170": 280,
+                    "155-185": 260,
+                    "160-190": 250
+                },
+                "24s": {
+                    "170-190": 270,
+                    "175-185": 260,
+                    "180-190": 250,
+                    "200-220": 230,
+                    "240-260": 220
+                },
+                "20s": {
+                    "190-210": 230,
+                    "200-210": 220,
+                    "230-245": 200,
+                    "240-260": 190,
+                    "250-270": 180
+                }
+            },
+            "42": {
+                "30s": {
+                    "140-150": 310,
+                    "145-165": 290,
+                    "150-170": 270,
+                    "155-185": 250,
+                    "160-190": 240
+                },
+                "24s": {
+                    "170-190": 260,
+                    "175-185": 250,
+                    "180-190": 240,
+                    "200-220": 220,
+                    "240-260": 210
+                },
+                "20s": {
+                    "190-210": 220,
+                    "200-210": 210,
+                    "230-245": 190,
+                    "240-260": 180,
+                    "250-270": 170
+                }
+            },
+            "45": {
+                "30s": {
+                    "140-150": 300,
+                    "145-165": 280,
+                    "150-170": 260,
+                    "155-185": 240,
+                    "160-190": 230
+                },
+                "24s": {
+                    "170-190": 250,
+                    "175-185": 240,
+                    "180-190": 230,
+                    "200-220": 210,
+                    "240-260": 200
+                },
+                "20s": {
+                    "190-210": 210,
+                    "200-210": 200,
+                    "230-245": 180,
+                    "240-260": 170,
+                    "250-270": 160
+                }
+            },
+            "72": {
+                "30s": {
+                    "140-150": 310,
+                    "145-165": 290,
+                    "150-170": 270,
+                    "155-185": 250,
+                    "160-190": 240
+                },
+                "24s": {
+                    "170-190": 260,
+                    "175-185": 250,
+                    "180-190": 240,
+                    "200-220": 220,
+                    "240-260": 210
+                },
+                "20s": {
+                    "190-210": 220,
+                    "200-210": 210,
+                    "230-245": 190,
+                    "240-260": 180,
+                    "250-270": 170
+                }
+            }
+        };
+
+        // Gramasi options
+        const gramasiOptions = {
+            "30s": [
+                { id: "30s-140-150", label: "30s (140-150 gsm)" },
+                { id: "30s-145-165", label: "30s (145-165 gsm)" },
+                { id: "30s-150-170", label: "30s (150-170 gsm)" },
+                { id: "30s-155-185", label: "30s (155-185 gsm)" },
+                { id: "30s-160-190", label: "30s (160-190 gsm)" }
+            ],
+            "24s": [
+                { id: "24s-170-190", label: "24s (170-190 gsm)" },
+                { id: "24s-175-185", label: "24s (175-185 gsm)" },
+                { id: "24s-180-190", label: "24s (180-190 gsm)" },
+                { id: "24s-200-220", label: "24s (200-220 gsm)" },
+                { id: "24s-240-260", label: "24s (240-260 gsm)" }
+            ],
+            "20s": [
+                { id: "20s-190-210", label: "20s (190-210 gsm)" },
+                { id: "20s-200-210", label: "20s (200-210 gsm)" },
+                { id: "20s-230-245", label: "20s (230-245 gsm)" },
+                { id: "20s-240-260", label: "20s (240-260 gsm)" },
+                { id: "20s-250-270", label: "20s (250-270 gsm)" }
+            ]
+        };
+
+        // DOM elements
+        const modelKaosSelect = document.getElementById('modelKaos');
+        const panjangTanganSelect = document.getElementById('panjangTangan');
+        const jenisKainSelect = document.getElementById('jenisKain');
+        const settinganKainSelect = document.getElementById('settinganKain');
+        const gramasiKainSelect = document.getElementById('gramasiKain');
+        const gramasiOptionsDiv = document.getElementById('gramasiOptions');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultCm = document.getElementById('resultCm');
+        const resultKg = document.getElementById('resultKg');
+        const detailTable = document.getElementById('detailTable');
+
+        // Event listeners
+        gramasiKainSelect.addEventListener('change', function() {
+            const selectedGramasi = this.value;
+            if (selectedGramasi) {
+                showGramasiOptions(selectedGramasi);
+            } else {
+                gramasiOptionsDiv.style.display = 'none';
+            }
+        });
+
+        calculateBtn.addEventListener('click', calculateFabricNeeds);
+
+        // Functions
+        function showGramasiOptions(gramasi) {
+            gramasiOptionsDiv.innerHTML = '';
+            gramasiOptionsDiv.style.display = 'block';
+            
+            const options = gramasiOptions[gramasi];
+            options.forEach(option => {
+                const div = document.createElement('div');
+                div.className = 'form-check';
+                
+                const input = document.createElement('input');
+                input.className = 'form-check-input';
+                input.type = 'radio';
+                input.name = 'gramasiDetail';
+                input.id = option.id;
+                input.value = option.id;
+                
+                const label = document.createElement('label');
+                label.className = 'form-check-label';
+                label.htmlFor = option.id;
+                label.textContent = option.label;
+                
+                div.appendChild(input);
+                div.appendChild(label);
+                gramasiOptionsDiv.appendChild(div);
+            });
+            
+            // Select first option by default
+            if (options.length > 0) {
+                document.getElementById(options[0].id).checked = true;
+            }
+        }
+
+        function calculateFabricNeeds() {
+            // Get form values
+            const modelKaos = modelKaosSelect.value;
+            const panjangTangan = panjangTanganSelect.value;
+            const jenisKain = jenisKainSelect.value;
+            const settinganKain = settinganKainSelect.value;
+            const gramasiKain = gramasiKainSelect.value;
+            
+            // Validate form
+            if (!modelKaos || !panjangTangan || !jenisKain || !settinganKain || !gramasiKain) {
+                alert('Silakan lengkapi semua pilihan sebelum menghitung!');
+                return;
+            }
+            
+            // Get selected gramasi detail
+            const gramasiDetailRadio = document.querySelector('input[name="gramasiDetail"]:checked');
+            if (!gramasiDetailRadio) {
+                alert('Silakan pilih detail gramasi kain!');
+                return;
+            }
+            const gramasiDetail = gramasiDetailRadio.value;
+            
+            // Get size quantities
+            const sizes = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
+            const quantities = {};
+            sizes.forEach(size => {
+                quantities[size] = parseInt(document.getElementById(`size${size}`).value) || 0;
+            });
+            
+            // Calculate fabric needs in cm
+            let totalCm = 0;
+            const detailRows = [];
+            
+            sizes.forEach(size => {
+                const quantity = quantities[size];
+                if (quantity > 0) {
+                    const cmPerShirt = sizeDataCm[modelKaos][panjangTangan][jenisKain][settinganKain][size];
+                    const totalCmForSize = quantity * cmPerShirt;
+                    totalCm += totalCmForSize;
+                    
+                    detailRows.push({
+                        size,
+                        quantity,
+                        cmPerShirt,
+                        totalCmForSize
+                    });
+                }
+            });
+            
+            // Add 10% waste
+            const totalCmWithWaste = totalCm * 1.1;
+            
+            // Calculate fabric needs in kg
+            const conversionKey = gramasiDetail.replace(/^[^-]+-/, '').replace('-', '-');
+            const conversionValue = conversionData[settinganKain][gramasiKain][conversionKey];
+            const totalKg = (totalCmWithWaste / conversionValue) * 1.1; // Add 1% waste
+            
+            // Display results
+            resultCm.textContent = `${totalCmWithWaste.toFixed(2)} cm`;
+            resultKg.textContent = `${totalKg.toFixed(2)} kg`;
+            
+            // Populate detail table
+            detailTable.innerHTML = '';
+            detailRows.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.size}</td>
+                    <td>${row.quantity}</td>
+                    <td>${row.cmPerShirt.toFixed(2)}</td>
+                    <td>${row.totalCmForSize.toFixed(2)}</td>
+                `;
+                detailTable.appendChild(tr);
+            });
+            
+            // Show result container
+            resultContainer.style.display = 'block';
+            
+            // Scroll to results
+            resultContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+design by yasin munazat
+</html>
